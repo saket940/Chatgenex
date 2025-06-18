@@ -16,7 +16,7 @@ const App = () => {
   useEffect(() => {
     const fetchObjectById = async (id) => {
       try {
-        const response = await fetch(`http://localhost:5000/api/find-object/${id}`);
+        const response = await fetch(`https://Chatgenex-backend.onrender.com/api/find-object/${id}`);
         const result = await response.json();
 
         if (response.ok) {
@@ -52,7 +52,7 @@ useEffect(()=>{
 }, [chatbotMassagesBackgroundColor, userMassagesBackgroundColor])
   async function sendMessage(userInput) {
     try {
-      const response = await fetch("http://localhost:5000/api/chatbot", {
+      const response = await fetch("https://Chatgenex-backend.onrender.com/api/chatbot", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
