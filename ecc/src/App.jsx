@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Bot from "./chatbot/bot";
+import Bot from "./chatbot/Bot";
 import User from "./chatbot/User";
 import Oldchat from "./chatbot/Oldchat";
 
