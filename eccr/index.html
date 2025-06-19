@@ -255,7 +255,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             // Ensure chat index exists
             const id = getIndexKey();
-            if (localStorage.getItem(id) === undefined) {
+            if (localStorage.getItem(id) === null) {
                 localStorage.setItem(id, '0');
             }
             fetchChatbotConfig();
