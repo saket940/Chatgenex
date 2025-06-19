@@ -335,6 +335,38 @@ app.post("/api/chatbot", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error & URL error" });
   }
 });
+app.post("/api/chatbotg", async(req, res) => {
+    try {
+        const { userMessage } = req.body;
+
+        // Make a request to OpenRouter
+        const response = await axios.post(
+            OPENROUTER_API_URL, {
+                model: "google/gemma-3-27b-it:free",
+                messages: [{
+                        role: "system",
+                        content: `You are a helpful assistant. `,
+                    },
+                    {
+                        role: "user",
+                        content: userMessage,
+                    },
+                ],
+            }, {
+                headers: {
+                    "Authorization": `Bearer sk - or - v1 - f0dc5a6b40b5f4d2aab60477481795387d577f922cde75417c02cc943a680d99 `,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        res.json({ botResponse: response.data.choices ? .[0] ? .message ? .content || "No response & URL error" });
+
+    } catch (error) {
+        console.error("Error fetching response:", error);
+        res.status(500).json({ error: "Internal Server Error & URL error" });
+    }
+});
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
