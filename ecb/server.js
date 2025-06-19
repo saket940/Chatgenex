@@ -348,19 +348,20 @@ app.post("/api/chatbotg", async(req, res) => {
                         content: `You are a helpful assistant. `,
                     },
                     {
-                        role: "user",
-                        content: userMessage,
-                    },
-                ],
-            }, {
-                headers: {
-                    "Authorization": `Bearer sk - or - v1 - f0dc5a6b40b5f4d2aab60477481795387d577f922cde75417c02cc943a680d99 `,
-                    "Content-Type": "application/json",
-                },
-            }
-        );
+            role: "user",
+            content: userMessage,
+          },
+        ],
+      },
+      {
+        headers: {
+          "Authorization": `Bearer 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`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-        res.json({ botResponse: response.data.choices?.[0]?.message?.content||"No response & URL error" });
+    res.json({ botResponse: response.data.choices?.[0]?.message?.content || "No response & URL error" });
 
     } catch (error) {
         console.error("Error fetching response:", error);
