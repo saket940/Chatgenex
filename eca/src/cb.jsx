@@ -32,7 +32,7 @@ const cb = (props) => {
       <h2 className="cbname">{props.name}</h2>
       <p className="cbmes">{props.message}</p>
       <h2 className="cbname">website link-
-      </h2><div className='copy'><p className="web">http://localhost:5174/{props.id}</p><button onClick={()=>{navigator.clipboard.writeText(`http://localhost:5174/${props.id}`)}}className="edit" id='copy'>copy</button></div>
+      </h2><div className='copy'><p className="web">https://chatgenex.onrender.com/{props.id}</p><button onClick={()=>{navigator.clipboard.writeText(`https://chatgenex.onrender.com/${props.id}`)}}className="edit" id='copy'>copy</button></div>
       <div className="butcan">
       <button onClick={() => setShowModal(true)}className="edit">Edit</button>
       {showModal && <Ec id={props.id}
