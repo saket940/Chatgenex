@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 // Connect to MongoDB Compass (Replace `<your_database_name>` with your actual database name)
 mongoose
-  .connect("mongodb://127.0.0.1:27017/chatbot_db")
+  .connect("mongodb+srv://asdadarya2222:6DkNIukzTmXJhDF1@cluster0.mlec2on.mongodb.net/")
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
