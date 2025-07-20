@@ -46,14 +46,14 @@ app.post("/register", async (req, res) => {
   // Login Route
   app.post("/login", async (req, res) => {
     const { email, password } = req.body;
-  
+
     if (!email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
-  
+
     try {
       const user = await User.findOne({ email, password });
-  
+
       if (user) {
         res.status(200).json({ message: "Login successful", email });
       } else {
@@ -66,7 +66,7 @@ app.post("/register", async (req, res) => {
   // API Route to Save Chatbot Data
 app.post("/api/chatbots", async (req, res) => {
   try {
-    const { userEmail, chatbotName, greetingMessage, trainingData,trainingpdf,trainingpdfdata } = req.body;
+    const { userEmail, chatbotName, greetingMessage, trainingData,trainingpdf,trainingpdfdata,userMassagesBackgroundColor,chatbotMassagesBackgroundColor } = req.body;
 
     if (!userEmail) {
       return res.status(400).json({ message: "User email is required!" });
@@ -87,7 +87,9 @@ app.post("/api/chatbots", async (req, res) => {
         greetingMessage: String,
         trainingData: String,
         trainingpdf:String,
-        trainingpdfdata:String
+        trainingpdfdata:String,
+        userMassagesBackgroundColor:String,
+        chatbotMassagesBackgroundColor:String
       },
       { collection: collectionName }
     );
@@ -96,11 +98,11 @@ app.post("/api/chatbots", async (req, res) => {
   }
     // Save chatbot data
 
-    const newChatbot = new ChatbotModel({ chatbotName, greetingMessage, trainingData,trainingpdf,trainingpdfdata });
+    const newChatbot = new ChatbotModel({ chatbotName, greetingMessage, trainingData,trainingpdf,trainingpdfdata,userMassagesBackgroundColor,chatbotMassagesBackgroundColor  });
     await newChatbot.save();
 
     res.status(201).json({ message: "Chatbot saved successfully!"+trainingpdf+trainingpdfdata });
-    
+
   } catch (error) {
     res.status(500).json({ message: "Error saving chatbot", error });
   }
@@ -137,7 +139,9 @@ app.get("/api/chatbots/:userEmail", async (req, res) => {
           greetingMessage: String,
           trainingData: String,
           trainingpdf:String,
-          trainingpdfdata:String
+          trainingpdfdata:String,
+          userMassagesBackgroundColor:String,
+          chatbotMassagesBackgroundColor:String
 
         },
         { collection: collectionName }
@@ -175,6 +179,10 @@ app.delete("/api/chatbots/:userEmail/:id", async (req, res) => {
           chatbotName: String,
           greetingMessage: String,
           trainingData: String,
+          trainingpdf:String,
+          trainingpdfdata:String,
+          userMassagesBackgroundColor:String,
+          chatbotMassagesBackgroundColor:String
         },
         { collection: collectionName }
       );
@@ -197,7 +205,7 @@ app.delete("/api/chatbots/:userEmail/:id", async (req, res) => {
 app.put("/api/chatbots/:userEmail/:id", async (req, res) => {
   try {
     const { userEmail, id } = req.params;
-    const { chatbotName, greetingMessage, trainingData, trainingpdf, trainingpdfdata } = req.body;
+    const { chatbotName, greetingMessage, trainingData, trainingpdf, trainingpdfdata,userMassagesBackgroundColor,chatbotMassagesBackgroundColor } = req.body;
 
     // Validate ID
     if (!id || id.length !== 24) {
@@ -217,7 +225,9 @@ app.put("/api/chatbots/:userEmail/:id", async (req, res) => {
           greetingMessage: String,
           trainingData: String,
           trainingpdf:String,
-          trainingpdfdata:String
+          trainingpdfdata:String,
+          userMassagesBackgroundColor:String,
+          chatbotMassagesBackgroundColor:String
         },
         { collection: collectionName }
       );
@@ -227,7 +237,7 @@ app.put("/api/chatbots/:userEmail/:id", async (req, res) => {
     // Update chatbot data
     const updatedChatbot = await ChatbotModel.findByIdAndUpdate(
       id,
-      { chatbotName, greetingMessage, trainingData,trainingpdf,trainingpdfdata },
+      { chatbotName, greetingMessage, trainingData,trainingpdf,trainingpdfdata,userMassagesBackgroundColor,chatbotMassagesBackgroundColor },
       { new: true }
     );
 
@@ -319,11 +329,44 @@ app.post("/api/chatbot", async (req, res) => {
     );
 
     res.json({ botResponse: response.data.choices?.[0]?.message?.content || "No response & URL error" });
+
   } catch (error) {
     console.error("Error fetching response:", error);
     res.status(500).json({ error: "Internal Server Error & URL error" });
   }
 });
+app.post("/api/chatbotg", async(req, res) => {
+    try {
+        const { userMessage } = req.body;
+
+        // Make a request to OpenRouter
+        const response = await axios.post(
+            OPENROUTER_API_URL, {
+                model: "google/gemma-3-27b-it:free",
+                messages: [{
+                        role: "system",
+                        content: `You are a helpful assistant. `,
+                    },
+                    {
+                        role: "user",
+                        content: userMessage,
+                    },
+                ],
+            }, {
+                headers: {
+                    "Authorization": `Bearer sk - or - v1 - f0dc5a6b40b5f4d2aab60477481795387d577f922cde75417c02cc943a680d99 `,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        res.json({ botResponse: response.data.choices ? .[0] ? .message ? .content || "No response & URL error" });
+
+    } catch (error) {
+        console.error("Error fetching response:", error);
+        res.status(500).json({ error: "Internal Server Error & URL error" });
+    }
+});
 // Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => .log(`Server running on port ${PORT}`));
