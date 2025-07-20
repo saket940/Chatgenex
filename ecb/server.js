@@ -360,7 +360,7 @@ app.post("/api/chatbotg", async(req, res) => {
             }
         );
 
-        res.json({ botResponse: response.data.choices ? .[0] ? .message ? .content || "No response & URL error" });
+        res.json({ botResponse: response.data.choices?.[0]?.message?.content || "No response & URL error" });
 
     } catch (error) {
         console.error("Error fetching response:", error);
