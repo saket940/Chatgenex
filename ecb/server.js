@@ -4,7 +4,8 @@ const cors = require("cors");
 const axios = require("axios");
 const bodyParser = require("body-parser");
 require("dotenv").config();
-
+const { GoogleGenAI } = require("@google/genai");
+const ai = new GoogleGenAI({ apiKey: "AIzaSyAYArdXaxHiPKsEspNC-sPOdCIJgIPZX1E" });
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -335,37 +336,18 @@ app.post("/api/chatbot", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error & URL error" });
   }
 });
-app.post("/api/chatbotg", async(req, res) => {
-    try {
-        const { userMessage } = req.body;
-
-        // Make a request to OpenRouter
-        const response = await axios.post(
-            OPENROUTER_API_URL, {
-                model: "google/gemma-3-27b-it:free",
-                messages: [{
-                        role: "system",
-                        content: `You are a helpful assistant. `,
-                    },
-                    {
-                        role: "user",
-                        content: userMessage,
-                    },
-                ],
-            }, {
-                headers: {
-                    "Authorization": `Bearer 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`,
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-
-        res.json({ botResponse: response.data.choices?.[0]?.message?.content || "No response & URL error" });
-
-    } catch (error) {
-        console.error("Error fetching response:", error);
-        res.status(500).json({ error: "Internal Server Error & URL error" });
-    }
+app.post("/api/chatbot", async (req, res) => {
+  try {
+    const { userMessage, trainingData,trainingDatapdf } = req.body;
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: `system :You are a helpful assistant. Use the provided context to answer briefly. If question is related to the context and the answer is not in the context, respond with: 'Sorry, I don’t have enough information to answer that .Here is some reference context data: ${trainingData},Here is some reference context from a PDF:\n${trainingDatapdf}.User:${userMessage}`
+  })
+    res.json({ botResponse:response.text || "No response & URL error" });
+  } catch (error) {
+    console.error("Error fetching response:", error);
+    res.status(500).json({ error: "Internal Server Error & URL error" });
+  }
 });
 // Start Server
 const PORT = process.env.PORT || 5000;
