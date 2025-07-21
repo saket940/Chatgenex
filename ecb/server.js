@@ -354,7 +354,7 @@ app.post("/api/chatbotg", async(req, res) => {
                 ],
             }, {
                 headers: {
-                    "Authorization": `Bearer sk - or - v1 - f0dc5a6b40b5f4d2aab60477481795387d577f922cde75417c02cc943a680d99 `,
+                    "Authorization": `Bearer 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`,
                     "Content-Type": "application/json",
                 },
             }
