@@ -68,7 +68,7 @@ app.post("/register", async (req, res) => {
 app.post("/api/chatbots", async (req, res) => {
   try {
     const { userEmail, chatbotName, greetingMessage, trainingData,trainingpdf,trainingpdfdata,userMassagesBackgroundColor,chatbotMassagesBackgroundColor } = req.body;
-
+console.error(req.body)
     if (!userEmail) {
       return res.status(400).json({ message: "User email is required!" });
     }
@@ -298,7 +298,7 @@ app.post("/api/chatbot", async (req, res) => {
     contents: `system :You are a helpful assistant. Use the provided context to answer briefly. If question is related to the context and the answer is not in the context, respond with: 'Sorry, I don’t have enough information to answer that .Here is some reference context data: ${trainingData},Here is some reference context from a PDF:\n${trainingDatapdf}.User:${userMessage}`
   })
     res.json({ botResponse:response.text || "No response & URL error" });
-    console.error(`system :You are a helpful assistant. Use the provided context to answer briefly. If question is related to the context and the answer is not in the context, respond with: 'Sorry, I don’t have enough information to answer that .Here is some reference context data: ${trainingData},Here is some reference context from a PDF:\n${trainingDatapdf}.User:${userMessage}`)
+    
   } catch (error) {
     console.error("Error fetching response:", error);
     res.status(500).json({ error: "Internal Server Error & URL error" });
