@@ -68,7 +68,6 @@ app.post("/register", async (req, res) => {
 app.post("/api/chatbots", async (req, res) => {
   try {
     const { userEmail, chatbotName, greetingMessage, trainingData,trainingpdf,trainingpdfdata,userMassagesBackgroundColor,chatbotMassagesBackgroundColor } = req.body;
-console.error(req.body)
     if (!userEmail) {
       return res.status(400).json({ message: "User email is required!" });
     }
