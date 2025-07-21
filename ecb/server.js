@@ -290,52 +290,6 @@ app.get("/api/find-object/:id", async (req, res) => {
   }
 });
 
-const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
-
-// Route to handle chatbot requests
-app.post("/api/chatbot", async (req, res) => {
-  try {
-    const { userMessage, trainingData,trainingDatapdf } = req.body;
-
-    // Make a request to OpenRouter
-    const response = await axios.post(
-      OPENROUTER_API_URL,
-      {
-        model: "google/gemma-3-27b-it:free",
-        messages: [
-          {
-            role: "system",
-            content: `You are a helpful assistant. Use the provided context to answer briefly. If question is related to the context and the answer is not in the context, respond with: 'Sorry, I don’t have enough information to answer that.'`,
-          },
-          {
-            role: "system",
-            content: `Here is some reference context data: ${trainingData}`,
-          },
-          {
-            role: "system",
-            content: `Here is some reference context from a PDF:\n${trainingDatapdf}`,
-          },
-          {
-            role: "user",
-            content: userMessage,
-          },
-        ],
-      },
-      {
-        headers: {
-          "Authorization": `Bearer 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`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    res.json({ botResponse: response.data.choices?.[0]?.message?.content || "No response & URL error" });
-
-  } catch (error) {
-    console.error("Error fetching response:", error);
-    res.status(500).json({ error: "Internal Server Error & URL error" });
-  }
-});
 app.post("/api/chatbot", async (req, res) => {
   try {
     const { userMessage, trainingData,trainingDatapdf } = req.body;
