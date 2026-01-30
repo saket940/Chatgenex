@@ -5,7 +5,7 @@ const axios = require("axios");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 const { GoogleGenAI } = require("@google/genai");
-const ai = new GoogleGenAI({ apiKey: "AIzaSyC2FB5LdtwqtWd2UgC5tFQkjDeLaLKDkYc" });
+const ai = new GoogleGenAI({});
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -306,4 +306,5 @@ app.post("/api/chatbot", async (req, res) => {
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
 
